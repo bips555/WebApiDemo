@@ -14,9 +14,9 @@ namespace WebApiDemo.Controllers
             return "Reading All the Shirts";
         }
         [HttpGet("{id}")]
-        public string GetShirtById(int id)
+        public string GetShirtById(int id, [FromHeader]string color)
         {
-            return $"Reading Shirt with Id {id}";
+            return $"Reading Shirt with Id {id} and color: {color}";
         }
         [HttpPost]
         public string CreateShirt()
