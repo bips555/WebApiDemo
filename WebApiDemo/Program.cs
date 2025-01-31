@@ -16,7 +16,7 @@ app.MapGet("/shirts/{id}", (int id) =>
 {
     return $"Reading shirt with id : {id}";
 });
-app.MapPost("/shirts",() =>
+app.MapPost("/shirts", () =>
 {
     return "Crating Shirt";
 });
