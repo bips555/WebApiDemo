@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using WebApiDemo.Models;
 
 namespace WebApiDemo.Controllers
 {
@@ -19,9 +20,9 @@ namespace WebApiDemo.Controllers
             return $"Reading Shirt with Id {id} and color: {color}";
         }
         [HttpPost]
-        public string CreateShirt()
+        public string CreateShirt([FromBody] Shirt shirt)
         {
-            return "Creating Shirt";
+            return "Creating shirt";
         }
         [HttpPut("{id}")]
         public string UpdateShirt(int id)
