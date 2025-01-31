@@ -18,6 +18,52 @@
         {
             return shirts.FirstOrDefault(x => x.ShirtId == id);
         }
+        public static List<Shirt> GetShirts()
+        {
+            return shirts;
+        }
+        public static void AddShirt(Shirt shirt)
+        {
+            int maxId = shirts.Max(x=>x.ShirtId);
+            shirt.ShirtId = maxId + 1;
+            shirts.Add(shirt);
+        }
+        public static void UpdateShirt(Shirt shirt)
+        {
+           
+            var shirtToUpdate = shirts.First(x => x.ShirtId == shirt.ShirtId);
+            shirtToUpdate.Brand = shirt.Brand;
+            shirtToUpdate.Gender = shirt.Gender;
+            shirtToUpdate.Size = shirt.Size;
+            shirtToUpdate.Price = shirt.Price;
+            shirtToUpdate.Color = shirt.Color;
+           
+        }
+        public static void DeleteShirt(int shirtId)
+        {
+            var shirt = GetShirtById(shirtId);
+            if(shirt !=null)
+            {
+                shirts.Remove(shirt);
+            }
+        }
+        public static Shirt? GetShirtByProperties(string? brand,string? color,string? gender, int? size)
+        {
+            return shirts.FirstOrDefault(x => !String.IsNullOrEmpty(brand) &&
+            !String.IsNullOrEmpty(x.Brand) &&
+            x.Brand.Equals(brand, StringComparison.OrdinalIgnoreCase) &&
+            !String.IsNullOrEmpty(color) &&
+            !String.IsNullOrEmpty(x.Color) &&
+            x.Color.Equals(color, StringComparison.OrdinalIgnoreCase) &&
+            !String.IsNullOrEmpty(gender) &&
+            !String.IsNullOrEmpty(x.Gender) &&
+            x.Gender.Equals(gender, StringComparison.OrdinalIgnoreCase) &&
+            x.Size.HasValue &&
+            size.HasValue &&
+            size.Value ==x.Size.Value
+
+            );
+        }
 
     }
 }

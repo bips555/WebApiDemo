@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
 using WebApiDemo.Filters;
+using WebApiDemo.Filters.ActionFilters;
+using WebApiDemo.Filters.ExceptionFilters;
 using WebApiDemo.Models;
 using WebApiDemo.Models.Repositories;
 
@@ -15,7 +17,7 @@ namespace WebApiDemo.Controllers
        
         public IActionResult GetShirts()
         {
-            return Ok("Reading All the Shirts");
+            return Ok(ShirtRepository.GetShirts());
         }
         [HttpGet("{id}")]
         [Shirt_ValidateShirtIdFilter]
@@ -24,19 +26,33 @@ namespace WebApiDemo.Controllers
             return Ok(ShirtRepository.GetShirtById(id));
         }
         [HttpPost]
+        [Shirt_CreateShirtFilter]
         public IActionResult CreateShirt([FromBody] Shirt shirt)
         {
-            return Ok("Creating Shirts");
+           
+            ShirtRepository.AddShirt(shirt);
+            return CreatedAtAction(nameof(GetShirtById), new { Id = shirt.ShirtId },shirt);
         }
         [HttpPut("{id}")]
-        public IActionResult UpdateShirt(int id)
+       // [Shirt_ValidateShirtIdFilter]
+        [Shirt_UpdateShirtFilter]
+        [Shirt_HandleUpdateExceptionsFilter]
+        public IActionResult UpdateShirt(int id, Shirt shirt)
         {
-            return Ok($"Updating Shirt with Id {id}");
+           
+                ShirtRepository.UpdateShirt(shirt);
+                return NoContent();
+          
         }
+
         [HttpDelete("{id}")]
+        [Shirt_ValidateShirtIdFilter]
         public IActionResult DeleteShirt(int id)
         {
-            return Ok($"Deleting Shirt with Id {id}");
+            var existingShirt = ShirtRepository.GetShirtById(id);
+            ShirtRepository.DeleteShirt(id);
+            return Ok(existingShirt);
+
         }
 
     }
