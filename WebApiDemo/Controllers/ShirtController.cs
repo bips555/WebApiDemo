@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using WebApiDemo.Filters;
 using WebApiDemo.Models;
 using WebApiDemo.Models.Repositories;
 
@@ -17,18 +18,10 @@ namespace WebApiDemo.Controllers
             return Ok("Reading All the Shirts");
         }
         [HttpGet("{id}")]
+        [Shirt_ValidateShirtIdFilter]
         public IActionResult GetShirtById(int id)
         {
-            if(id < 0)
-            {
-                return BadRequest();
-            }
-            var shirt = ShirtRepository.GetShirtById(id);
-            if (!ShirtRepository.ShirtExists(id))
-            {
-                return NotFound();
-            }
-            return Ok(shirt);
+            return Ok(ShirtRepository.GetShirtById(id));
         }
         [HttpPost]
         public IActionResult CreateShirt([FromBody] Shirt shirt)
