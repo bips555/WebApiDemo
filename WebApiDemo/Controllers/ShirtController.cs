@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using WebApiDemo.Data;
 using WebApiDemo.Filters;
 using WebApiDemo.Filters.ActionFilters;
 using WebApiDemo.Filters.ExceptionFilters;
@@ -12,12 +13,18 @@ namespace WebApiDemo.Controllers
     [Route("api/[Controller]")]
     public class ShirtController : ControllerBase
     {
-       
+        private readonly ApplicationDbContext _context;
+
+        public ShirtController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         [HttpGet]
        
         public IActionResult GetShirts()
         {
-            return Ok(ShirtRepository.GetShirts());
+            return Ok(_context.Shirts.ToList());
         }
         [HttpGet("{id}")]
         [Shirt_ValidateShirtIdFilter]
