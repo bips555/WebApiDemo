@@ -27,10 +27,10 @@ namespace WebApiDemo.Controllers
             return Ok(_context.Shirts.ToList());
         }
         [HttpGet("{id}")]
-        [Shirt_ValidateShirtIdFilter]
+        [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAttribute))]
         public IActionResult GetShirtById(int id)
         {
-            return Ok(ShirtRepository.GetShirtById(id));
+            return Ok(HttpContext.Items["shirt"]);
         }
         [HttpPost]
         [Shirt_CreateShirtFilter]
@@ -41,7 +41,7 @@ namespace WebApiDemo.Controllers
             return CreatedAtAction(nameof(GetShirtById), new { Id = shirt.ShirtId },shirt);
         }
         [HttpPut("{id}")]
-       // [Shirt_ValidateShirtIdFilter]
+        [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAttribute))]
         [Shirt_UpdateShirtFilter]
         [Shirt_HandleUpdateExceptionsFilter]
         public IActionResult UpdateShirt(int id, Shirt shirt)
@@ -53,7 +53,7 @@ namespace WebApiDemo.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Shirt_ValidateShirtIdFilter]
+        [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAttribute))]
         public IActionResult DeleteShirt(int id)
         {
             var existingShirt = ShirtRepository.GetShirtById(id);
