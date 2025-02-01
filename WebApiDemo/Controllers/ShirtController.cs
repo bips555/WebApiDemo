@@ -33,11 +33,12 @@ namespace WebApiDemo.Controllers
             return Ok(HttpContext.Items["shirt"]);
         }
         [HttpPost]
-        [Shirt_CreateShirtFilter]
+        [TypeFilter(typeof(Shirt_CreateShirtFilterAttribute))]
         public IActionResult CreateShirt([FromBody] Shirt shirt)
         {
-           
-            ShirtRepository.AddShirt(shirt);
+
+            _context.Add(shirt);
+            _context.SaveChanges();
             return CreatedAtAction(nameof(GetShirtById), new { Id = shirt.ShirtId },shirt);
         }
         [HttpPut("{id}")]
