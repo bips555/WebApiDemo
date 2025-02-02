@@ -2,6 +2,7 @@
 using WebApp.Data;
 using WebApp.Models;
 using WebApp.Models.Repositories;
+using WebApp.Models.Validations;
 
 namespace WebApp.Controllers
 {
@@ -16,6 +17,16 @@ namespace WebApp.Controllers
         {
             
             return View(await _webApiExecutor.InvokeGet<List<Shirt>>("shirt"));
+        }
+        public IActionResult CreateShirt()
+        {
+            return View();
+        }
+        [HttpPost]
+     
+        public async Task<IActionResult> CreateShirt(Shirt shirt)
+        {
+            return View(shirt);
         }
     }
 }
