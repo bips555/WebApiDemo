@@ -26,6 +26,11 @@ namespace WebApp.Controllers
      
         public async Task<IActionResult> CreateShirt(Shirt shirt)
         {
+           if(ModelState.IsValid)
+            {
+                await _webApiExecutor.InvokePost<Shirt>("shirt", shirt);
+                return RedirectToAction(nameof(Index));
+            }
             return View(shirt);
         }
     }
