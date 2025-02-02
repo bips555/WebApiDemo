@@ -3,7 +3,8 @@
 <div class="container mt-5">
     <div class="card shadow-lg p-4">
         <h2 class="text-center mb-4">Update Shirt</h2>
-        <form asp-action="CreateShirt" method="post" asp-controller="Shirt">
+        <form asp-action="UpdateShirt" method="post" asp-controller="Shirt">
+            <input asp-for="ShirtId" type="hidden"/>
             <div class="text-danger mb-3" asp-validation-summary="ModelOnly"></div>
 
             <div class="mb-3">

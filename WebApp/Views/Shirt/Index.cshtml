@@ -22,7 +22,7 @@
                 <td>@shirt.Size</td>
                 <td>@shirt.Color</td>
                 <td>@(shirt.Price.HasValue?shirt.Price.Value.ToString("c"):"")</td>
-                <td><a asp-action="UpdateShirt" asp-controller="Shirt" asp-route-shirtId="shirt.Id" class="btn btn-link"></a></td>
+                <td><a asp-action="UpdateShirt" asp-controller="Shirt" asp-route-shirtId="@shirt.ShirtId" class="btn btn-link text-dark">Edit</a></td>
             </tr>
         }
     </tbody>
