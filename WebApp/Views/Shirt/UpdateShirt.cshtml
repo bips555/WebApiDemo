@@ -5,7 +5,7 @@
         <h2 class="text-center mb-4">Update Shirt</h2>
         <form asp-action="UpdateShirt" method="post" asp-controller="Shirt">
             <input asp-for="ShirtId" type="hidden"/>
-            <div class="text-danger mb-3" asp-validation-summary="ModelOnly"></div>
+            <div class="text-danger mb-3" asp-validation-summary="All"></div>
 
             <div class="mb-3">
                 <label asp-for="Brand" class="form-label">Brand</label>

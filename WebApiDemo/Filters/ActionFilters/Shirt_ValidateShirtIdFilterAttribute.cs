@@ -32,7 +32,7 @@ namespace WebApiDemo.Filters
                     var shirt = _context.Shirts.Find(shirtId.Value);
                    if(shirt == null)
                     {
-                        context.ModelState.AddModelError("ShirtId", "ShirtId does not exist");
+                        context.ModelState.AddModelError("ShirtId", "Shirt does not exist");
                         var problemDetails = new ValidationProblemDetails(context.ModelState)
                         {
                             Status = StatusCodes.Status404NotFound
