@@ -83,8 +83,16 @@ namespace WebApp.Controllers
         }
         public async Task<IActionResult> DeleteShirt(int shirtId)
         {
+            try
+            {
                 await _webApiExecutor.InvokeDelete<Shirt>($"shirt/{shirtId}");
                 return RedirectToAction(nameof(Index));
+            }
+            catch(WebApiException ex)
+            {
+                HandleWebApiExeption(ex);
+                    return View(nameof(Index), await _webApiExecutor.InvokeGet<List<Shirt>>("shirt"));
+            }
            
         }
         private void HandleWebApiExeption(WebApiException ex)
