@@ -13,13 +13,14 @@ namespace WebApiDemo.Authority
         {
             var app = ApplicationRepository.GetApplicationByClientId(clientId);
 
-            if(app == null) {
+            if (app == null)
+            {
                 return false;
             }
             return app.ClientId == clientId && app.Secret == secret;
 
         }
-        public static string CreateToken(string clientId, DateTime expiresAt,string? strSecretKey)
+        public static string CreateToken(string clientId, DateTime expiresAt, string? strSecretKey)
         {
             var app = ApplicationRepository.GetApplicationByClientId(clientId);
             var claims = new List<Claim>() {
@@ -38,5 +39,38 @@ namespace WebApiDemo.Authority
                 );
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
+        public static bool VerifyToken(string token, string strSecretKey)
+        {
+            if(string.IsNullOrWhiteSpace(token))
+            {
+                return false;
+            }
+
+            var secretKey = Encoding.ASCII.GetBytes(strSecretKey);
+            SecurityToken securityToken;
+            
+            var tokenHandler = new JwtSecurityTokenHandler();
+            try
+            {
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(secretKey),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true
+                }, out securityToken);
+            }
+            catch(SecurityTokenException)
+            {
+                return false;
+            }
+            catch 
+            {
+                throw;
+            }
+            return securityToken != null;
+        }
 
     }
+}
