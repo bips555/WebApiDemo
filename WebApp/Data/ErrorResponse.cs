@@ -7,7 +7,7 @@ namespace WebApp.Data
         [JsonPropertyName("title")]
         public string? Title { get; set; }
         [JsonPropertyName("status")]
-        public string? Status { get; set; }
+        public int? Status { get; set; }
         [JsonPropertyName("errors")]
         public Dictionary<string, List<string>>? Errors { get; set; }
     }

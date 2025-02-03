@@ -4,7 +4,7 @@
     <div class="card shadow-lg p-4">
         <h2 class="text-center mb-4">Add New Shirt</h2>
         <form asp-action="CreateShirt" method="post" asp-controller="Shirt">
-            <div class="text-danger mb-3" asp-validation-summary="ModelOnly"></div>
+            <div class="text-danger mb-3" asp-validation-summary="All"></div>
 
             <div class="mb-3">
                 <label asp-for="Brand" class="form-label">Brand</label>
