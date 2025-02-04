@@ -24,10 +24,17 @@ namespace WebApiDemo.Authority
         {
             var app = ApplicationRepository.GetApplicationByClientId(clientId);
             var claims = new List<Claim>() {
-                new Claim("ApplicationName", app?.ApplicationName ?? string.Empty),
-                new Claim("Read",(app?.Scopes??string.Empty).Contains("read")?"true":"false"),
-                new Claim("Write",( app?.Scopes??string.Empty).Contains("read") ? "true" : "false")
+                new Claim("ApplicationName", app?.ApplicationName ?? string.Empty)
                 };
+            var scopes = app?.Scopes?.Split(",");
+            if (scopes != null && scopes.Length > 0)
+            {
+                foreach (var scope in scopes)
+                {
+                    claims.Add(new Claim(scope.ToLower(), "true"));
+                }
+            }
+
             var secretKey = Encoding.ASCII.GetBytes(strSecretKey);
             var jwt = new JwtSecurityToken(
                 signingCredentials: new Microsoft.IdentityModel.Tokens.SigningCredentials(
@@ -39,12 +46,12 @@ namespace WebApiDemo.Authority
                 );
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
-        public static bool VerifyToken(string token, string strSecretKey)
+        public static IEnumerable<Claim>? VerifyToken(string token, string strSecretKey)
         {
 
             if(string.IsNullOrWhiteSpace(token))
             {
-                return false;
+                return null;
             }
             if(token.StartsWith("Bearer"))
             {
@@ -65,16 +72,25 @@ namespace WebApiDemo.Authority
                     ValidateAudience = false,
                     ValidateLifetime = true
                 }, out securityToken);
+                if(securityToken != null)
+                {
+                    var tokenObj = tokenHandler.ReadJwtToken(token);
+                    return tokenObj.Claims ?? (new List<Claim>());
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch(SecurityTokenException)
             {
-                return false;
+                return null;
             }
             catch 
             {
                 throw;
             }
-            return securityToken != null;
+          
         }
 
     }
