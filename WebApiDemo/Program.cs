@@ -14,11 +14,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddControllers();
 builder.Services.AddApiVersioning(options=>
 {
+    options.ReportApiVersions = true;
     options.AssumeDefaultVersionWhenUnspecified = true;
     options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
-    options.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
+   // options.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
 });
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddVersionedApiExplorer(options=>
+
+    options.GroupNameFormat = "'v'VVV"
+);
 builder.Services.AddSwaggerGen(c=>
 {
     c.OperationFilter<AuthorizationHeaderOperationFilter>();
@@ -27,7 +31,8 @@ builder.Services.AddSwaggerGen(c=>
         Scheme = "Bearer",
         Type = SecuritySchemeType.Http,
         BearerFormat = "JWT",
-        In= ParameterLocation.Header
+        In= ParameterLocation.Header,
+
     });
 });
 var app = builder.Build();
@@ -37,7 +42,10 @@ var app = builder.Build();
 if(app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options=>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1");
+    });
 }
 app.UseHttpsRedirection();
 
