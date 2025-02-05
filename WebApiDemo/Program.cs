@@ -25,6 +25,8 @@ builder.Services.AddVersionedApiExplorer(options=>
 );
 builder.Services.AddSwaggerGen(c=>
 {
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My webApi v1", Version = "version 1" });
+    c.SwaggerDoc("v2", new OpenApiInfo { Title = "My webApi v2", Version = "version 2" });
     c.OperationFilter<AuthorizationHeaderOperationFilter>();
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -45,6 +47,7 @@ if(app.Environment.IsDevelopment())
     app.UseSwaggerUI(options=>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1");
+        options.SwaggerEndpoint("/swagger/v2/swagger.json", "WebAPI v2");
     });
 }
 app.UseHttpsRedirection();

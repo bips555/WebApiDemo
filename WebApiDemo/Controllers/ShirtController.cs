@@ -63,6 +63,7 @@ namespace WebApiDemo.Controllers.V2
             shirtToUpdate.Size = shirt.Size;
             shirtToUpdate.Price = shirt.Price;
             shirtToUpdate.Color = shirt.Color;
+            shirtToUpdate.Description = shirt.Description;
             _context.SaveChanges();
 
             return NoContent();
