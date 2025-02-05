@@ -4,13 +4,12 @@ using WebApiDemo.Attributes;
 using WebApiDemo.Data;
 using WebApiDemo.Filters;
 using WebApiDemo.Filters.ActionFilters;
-using WebApiDemo.Filters.ActionFilters.V2;
 using WebApiDemo.Filters.AuthFilters;
 using WebApiDemo.Filters.ExceptionFilters;
 using WebApiDemo.Models;
 using WebApiDemo.Models.Repositories;
 
-namespace WebApiDemo.Controllers.V2
+namespace WebApiDemo.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")]
@@ -39,7 +38,6 @@ namespace WebApiDemo.Controllers.V2
         }
         [HttpPost]
         [TypeFilter(typeof(Shirt_CreateShirtFilterAttribute))]
-        [Shirt_EnsureDescriptionIsPresentFilter]
         [RequiredClaim("write", "true")]
         public IActionResult CreateShirt([FromBody] Shirt shirt)
         {
@@ -50,7 +48,6 @@ namespace WebApiDemo.Controllers.V2
         }
         [HttpPut("{id}")]
         [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAttribute))]
-        [Shirt_EnsureDescriptionIsPresentFilter]
         [Shirt_UpdateShirtFilter]
         [TypeFilter(typeof(Shirt_HandleUpdateExceptionsFilterAttribute))]
         [RequiredClaim("write", "true")]
