@@ -11,6 +11,7 @@ using WebApiDemo.Models.Repositories;
 
 namespace WebApiDemo.Controllers
 {
+    [ApiVersion("1.0")]
     [ApiController]
     [Route("api/[Controller]")]
     [JwtTokenAuthFilter]

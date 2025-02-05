@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using WebApiDemo.Data;
@@ -11,6 +12,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddApiVersioning(options=>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    options.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c=>
 {
