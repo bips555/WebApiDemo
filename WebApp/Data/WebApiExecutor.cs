@@ -37,7 +37,7 @@ namespace WebApp.Data
         public async Task InvokePut<T>(string relativeUrl, T obj)
         {
             var httpClient = _httpClientFactory.CreateClient(apiName);
-         //   await AddJwtToHeader(httpClient);
+            await AddJwtToHeader(httpClient);
             var response = await httpClient.PutAsJsonAsync(relativeUrl, obj);
             await HandlePossibleErrors(response);
         }

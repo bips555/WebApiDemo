@@ -14,7 +14,7 @@ namespace WebApiDemo.Filters.AuthFilters
                context.Result = new UnauthorizedResult();
                 return;
             }
-            var config = context.HttpContext.RequestServices.GetService<IConfiguration>();
+            var config =  context.HttpContext.RequestServices.GetService<IConfiguration>();
           var claims = Authenticator.VerifyToken(token, config.GetValue<string>("Secretkey"));
           
             if(claims == null)
@@ -23,12 +23,17 @@ namespace WebApiDemo.Filters.AuthFilters
             }
             else
             {
-                var requiredClaims = context.ActionDescriptor.EndpointMetadata.OfType<RequiredClaimAttribute>()
-                    .ToList();
-                if(requiredClaims != null && !requiredClaims.All(rc=>claims.Any(c=>c.Type.ToLower()==rc.ClaimType.ToLower() && c.Value.ToLower() == rc.ClaimValue.ToLower())))
+                var requiredClaims =  context.ActionDescriptor.EndpointMetadata
+     .OfType<RequiredClaimAttribute>()
+     .ToList();
+
+                if (requiredClaims != null && !requiredClaims.All(rc => claims.Any(c =>
+                        string.Equals(c.Type, rc.ClaimType, StringComparison.OrdinalIgnoreCase) &&
+                        string.Equals(c.Value, rc.ClaimValue, StringComparison.OrdinalIgnoreCase))))
                 {
                     context.Result = new StatusCodeResult(403);
                 }
+
             }
         }
     }

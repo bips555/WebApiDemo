@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using WebApiDemo.Attributes;
 using WebApiDemo.Data;
 using WebApiDemo.Filters;
 using WebApiDemo.Filters.ActionFilters;
@@ -23,19 +24,21 @@ namespace WebApiDemo.Controllers
         }
 
         [HttpGet]
-       
+        [RequiredClaim("read","true")]
         public IActionResult GetShirts()
         {
             return Ok(_context.Shirts.ToList());
         }
         [HttpGet("{id}")]
         [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAttribute))]
+        [RequiredClaim("read", "true")]
         public IActionResult GetShirtById(int id)
         {
             return Ok(HttpContext.Items["shirt"]);
         }
         [HttpPost]
         [TypeFilter(typeof(Shirt_CreateShirtFilterAttribute))]
+        [RequiredClaim("write", "true")]
         public IActionResult CreateShirt([FromBody] Shirt shirt)
         {
 
@@ -47,6 +50,7 @@ namespace WebApiDemo.Controllers
         [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAttribute))]
         [Shirt_UpdateShirtFilter]
         [TypeFilter(typeof(Shirt_HandleUpdateExceptionsFilterAttribute))]
+        [RequiredClaim("write", "true")]
         public IActionResult UpdateShirt(int id, Shirt shirt)
         {
             var shirtToUpdate = HttpContext.Items["shirt"] as Shirt;
@@ -63,6 +67,8 @@ namespace WebApiDemo.Controllers
 
         [HttpDelete("{id}")]
         [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAttribute))]
+        [RequiredClaim("delete", "true")]
+
         public IActionResult DeleteShirt(int id)
         {
             var shirtToDelete = HttpContext.Items["shirt"] as Shirt;
